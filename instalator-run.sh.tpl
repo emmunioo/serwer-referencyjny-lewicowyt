@@ -44,7 +44,8 @@ echo "Suma SHA-256 archiwum zgodna."
 mkdir -p "$TARGET" || { echo "Nie moge utworzyc $TARGET" >&2; exit 1; }
 echo "Rozpakowuje do: $TARGET"
 tail -n +"$SKIP" "$0" | tar -xzf - -C "$TARGET" || { echo "Rozpakowanie nie powiodlo sie." >&2; exit 1; }
-chmod +x "$TARGET"/*.sh 2>/dev/null
+# tar zbudowany na Windowsie nie zachowuje bitu wykonywania binarek (tools/ffmpeg, tools/ffprobe)
+chmod +x "$TARGET"/*.sh "$TARGET"/tools/* 2>/dev/null
 
 if [ "$NOEXEC" = 1 ]; then echo "Rozpakowano (--noexec). Uruchom:  cd \"$TARGET\" && sh install.sh"; exit 0; fi
 cd "$TARGET" || exit 1

@@ -255,6 +255,9 @@ build_libva() {
   ( cd "$bld"
     "$src/configure" --prefix="$PREFIX" --enable-static --disable-shared --with-pic --disable-docs --disable-x11 --disable-glx       --disable-wayland --enable-drm       --with-drivers-path=/usr/lib/x86_64-linux-gnu/dri:/usr/lib/aarch64-linux-gnu/dri:/usr/lib64/dri:/usr/lib/dri
     make -j"$JOBS"; make install )
+  # libva-drm.pc nie zawiera zależności od libdrm => test konfiguracji FFmpeg (vaGetDisplayDRM) nie linkuje, a FFmpeg buduje się
+  # BEZ VAAPI-DRM (HAVE_VAAPI_DRM 0 => "No VA display found"). Dopisujemy libdrm jako zależność statyczną.
+  grep -q -- '-ldrm' "$PREFIX/lib/pkgconfig/libva-drm.pc" || sed -i '/^Libs:/a Libs.private: -ldrm' "$PREFIX/lib/pkgconfig/libva-drm.pc"
   # katalog z samymi bibliotekami .a (linker bierze je przed .so): libdrm i zlib linkujemy statycznie
   mkdir -p "$PREFIX/static-only"
   for l in libdrm.a libz.a libstdc++.a; do
@@ -296,6 +299,10 @@ build_ffmpeg() {
       --extra-libs="$cxxlibs" \
       "${FFMPEG_FLAGS[@]}" \
       "${FF_CROSS_ARGS[@]}"
+    # bezpiecznik: bez DRM-owego wariantu VAAPI plik "buduje się", ale na Intelu/AMD nie zadziała — wolimy przerwać
+    if [ "$PLATFORM" = "linux" ] && ! grep -q "define HAVE_VAAPI_DRM 1" config.h; then
+      echo "BLAD: FFmpeg zbudowany bez VAAPI-DRM (HAVE_VAAPI_DRM 0) — sprawdz libva-drm.pc / ffbuild/config.log" >&2; exit 1
+    fi
     make -j"$JOBS"
     make install
   )
