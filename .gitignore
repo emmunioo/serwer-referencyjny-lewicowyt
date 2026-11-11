@@ -1,0 +1,13 @@
+# dane serwera (treści, subskrybenci, certyfikaty, dane Tora) — nie publikować
+data/
+# pobrany silnik i Tor (regenerują się przez instalator) — nie commitować binarek
+engine/
+engine-tor/
+.enginepath
+# narzędzia (ffmpeg, ffprobe, cjxl) kładzione obok serwera
+tools/
+# zależności HTTPS (opcjonalne)
+node_modules/
+# gotowe instalatory (.exe/.run) — budowane przez node zrob-instalatory.mjs
+dist/
+instalator-exe/payload.zip

@@ -1,0 +1,9 @@
+# katalogi robocze i wyniki buildu
+/work/
+/dist/
+
+# typowe śmieci
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

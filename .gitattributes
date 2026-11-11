@@ -1,0 +1,8 @@
+# skrypty uruchamiane na Linuxie i szablon .run muszą mieć końce linii LF także po checkoutcie na Windows
+*.sh text eol=lf
+*.tpl text eol=lf
+*.go text eol=lf
+*.mjs text eol=lf
+*.js text eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf

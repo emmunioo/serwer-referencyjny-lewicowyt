@@ -1,0 +1,16 @@
+{
+  "name": "lewicowyt-serwer-spolecznosci",
+  "version": "1.14.0",
+  "private": true,
+  "type": "module",
+  "description": "Idiotoodporny serwer spolecznosci dla aplikacji lewicowYT — wszystkie typy tresci wpisywane recznie, powiadomienia UnifiedPush (E2E, bez Google), Tor (.onion) i HTTPS w zestawie. Pelna konfiguracja z przegladarki.",
+  "engines": { "node": ">=22.15" },
+  "scripts": {
+    "start": "node server.js",
+    "e2e-test": "node e2e.js",
+    "test": "node test-e2e.mjs"
+  },
+  "optionalDependencies": {
+    "acme-client": "^5.4.0"
+  }
+}
