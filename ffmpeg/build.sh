@@ -240,6 +240,9 @@ build_amf_headers() {
   mkdir -p "$PREFIX/include/AMF"; cp -r "$SRC_DIR/amf/amf/public/include/." "$PREFIX/include/AMF/"
 }
 build_libvpl() {
+  # libvpl: "#if _MSC_VER < 1400" jest PRAWDZIWE pod GCC (_MSC_VER niezdefiniowane = 0) => własne makro wcscpy_s/wcscat_s
+  # psuje nagłówki MinGW (sec_api/stralign_s.h: "expected ';' before ')'"). Ograniczamy je do starego MSVC.
+  sed -i 's/^#if _MSC_VER < 1400$/#if defined(_MSC_VER) \&\& _MSC_VER < 1400/' "$SRC_DIR/libvpl/libvpl/src/windows/mfx_dispatcher_defs.h"
   cmake_build libvpl -DBUILD_TESTS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TOOLS=OFF -DBUILD_EXPERIMENTAL=OFF     -DINSTALL_EXAMPLE_CODE=OFF -DBUILD_DISPATCHER_ONEVPL_EXPERIMENTAL=OFF
 }
 

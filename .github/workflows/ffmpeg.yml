@@ -56,7 +56,7 @@ jobs:
         working-directory: ffmpeg
         run: |
           export PROCESSOR_ARCHITECTURE=AMD64
-          ./build.sh --jobs "$(nproc)"
+          bash ./build.sh --jobs "$(nproc)"
       - name: Test
         working-directory: ffmpeg
         run: |
